@@ -287,6 +287,7 @@ public class BoozleageScript : MonoBehaviour
 
     private IEnumerator SolveAnimation()
     {
+        var rndShuff = Enumerable.Range(0, 6).ToArray().Shuffle();
         Audio.PlaySoundAtTransform("GrandStar", transform);
         for (int i = 0; i < 64; i++)
             BoozleButtonLetters[i].SetActive(false);
@@ -297,7 +298,7 @@ public class BoozleageScript : MonoBehaviour
                 for (int c = 0; c < 8; c++)
                 {
                     if (!_animSatis[r * 8 + c])
-                        BoozleButtonObjs[r * 8 + c].GetComponent<MeshRenderer>().material = BoozleButtonMats[(ix + r + c) % 6];
+                        BoozleButtonObjs[r * 8 + c].GetComponent<MeshRenderer>().material = BoozleButtonMats[rndShuff[(ix + r + c) % 6]];
                 }
             }
             if (ix == 16)
@@ -352,7 +353,6 @@ public class BoozleageScript : MonoBehaviour
     {
         while (_satisfied.Contains(false))
         {
-            nextTime:
             int time = (int)BombInfo.GetTime() % 60;
             for (int i = 0; i < _acceptablePos.Length; i++)
             {
@@ -363,7 +363,7 @@ public class BoozleageScript : MonoBehaviour
                     if (CheckValidPress(_acceptablePos[i][j], (int)BombInfo.GetTime() % 60)[0] == "true")
                     {
                         BoozleButtonSels[_acceptablePos[i][j]].OnInteract();
-                        goto nextTime;
+                        yield return new WaitForSeconds(0.1f);
                     }
                     else
                         while (time == (int)BombInfo.GetTime() % 60)
