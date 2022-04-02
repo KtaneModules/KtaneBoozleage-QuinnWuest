@@ -322,6 +322,10 @@ public class BoozleageScript : MonoBehaviour
         yield break;
     }
 
+#pragma warning disable 0414
+    private string TwitchHelpMessage = "Phase 0: !{0} press A1 at xx [Presses button A1 when the seconds digits are xx.] | !{0} press B2 at x [Presses button B2 when the last digit of the timer is x.] | Columns are labelled A-H. Rows are labelled 1-8.";
+#pragma warning restore 0414
+
     private IEnumerator ProcessTwitchCommand(string command)
     {
         var m = Regex.Match(command, @"^\s*press\s+([A-H])([1-8])\s+at\s+(\d+)\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
