@@ -206,7 +206,7 @@ public class BoozleageScript : MonoBehaviour
                 val = letter % 10;
                 break;
             case 3:
-                tc = 0;
+                tc = 1;
                 val = 9 - (letter % 10);
                 break;
             case 4:
@@ -323,7 +323,7 @@ public class BoozleageScript : MonoBehaviour
     }
 
 #pragma warning disable 0414
-    private string TwitchHelpMessage = "Phase 0: !{0} press A1 at xx [Presses button A1 when the seconds digits are xx.] | !{0} press B2 at x [Presses button B2 when the last digit of the timer is x.] | Columns are labelled A-H. Rows are labelled 1-8.";
+    private string TwitchHelpMessage = "!{0} press A1 at xx [Presses button A1 when the seconds digits are xx.] | !{0} press B2 at x [Presses button B2 when the last digit of the timer is x.] | Columns are labelled A-H. Rows are labelled 1-8.";
 #pragma warning restore 0414
 
     private IEnumerator ProcessTwitchCommand(string command)
@@ -376,7 +376,7 @@ public class BoozleageScript : MonoBehaviour
             }
             yield return null;
         }
-        while (_actuallySolved)
+        while (!_actuallySolved)
             yield return true;
         yield break;
     }
