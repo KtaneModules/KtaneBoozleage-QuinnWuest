@@ -364,7 +364,7 @@ public class BoozleageScript : MonoBehaviour
                     continue;
                 for (int j = 0; j < _acceptablePos[i].Length; j++)
                 {
-                    if (CheckValidPress(_acceptablePos[i][j], (int)BombInfo.GetTime() % 60)[0] == "true")
+                    if (CheckValidPress(_acceptablePos[i][j], (int)BombInfo.GetTime() % 60)[0] == "true" && !_satisfied[i])
                     {
                         BoozleButtonSels[_acceptablePos[i][j]].OnInteract();
                         yield return new WaitForSeconds(0.1f);
