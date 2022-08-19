@@ -17777,7 +17777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleType: BoozleageModule
   ModuleDisplayName: Boozleage
-  RequiresTimerVisibility: 0
+  RequiresTimerVisibility: 1
 --- !u!114 &114525370336314692
 MonoBehaviour:
   m_ObjectHideFlags: 1

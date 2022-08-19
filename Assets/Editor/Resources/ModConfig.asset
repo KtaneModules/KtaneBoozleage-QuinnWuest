@@ -17,7 +17,12 @@ MonoBehaviour:
   description: 'Impending doom approa... okay, what the hell is this?!
 
 
-    Made by Quinn Wuest'
+    Made by Quinn Wuest
+
+
+    The manual can be found [url=https://ktane.timwi.de/HTML/Boozleage.html]here[/url].
+
+'
   version: 1.0
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 481a889040ef6e04d9beb58489f44c46, type: 3}
