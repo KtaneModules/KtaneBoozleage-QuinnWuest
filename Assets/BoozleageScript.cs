@@ -340,6 +340,8 @@ public class BoozleageScript : MonoBehaviour
         if (timecmd.Length != 1 && timecmd.Length != 2)
             yield break;
         yield return null;
+        yield return "solve";
+        yield return "strike";
         if (timecmd.Length == 1)
         {
             while ((int)BombInfo.GetTime() % 10 != timepress)
