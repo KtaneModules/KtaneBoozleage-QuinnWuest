@@ -291,7 +291,7 @@ public class BoozleageScript : MonoBehaviour
         Audio.PlaySoundAtTransform("GrandStar", transform);
         for (int i = 0; i < 64; i++)
             BoozleButtonLetters[i].SetActive(false);
-        for (int ix = 0; ix < 17; ix++)
+        for (int ix = 0; ix < 20; ix++)
         {
             for (int r = 0; r < 8; r++)
             {
@@ -301,25 +301,31 @@ public class BoozleageScript : MonoBehaviour
                         BoozleButtonObjs[r * 8 + c].GetComponent<MeshRenderer>().material = BoozleButtonMats[rndShuff[(ix + r + c) % 6]];
                 }
             }
-            if (ix == 16)
-                StartCoroutine(SpiralTextures());
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.29f);
         }
-    }
-
-    private IEnumerator SpiralTextures()
-    {
+        var arr = new int[] { 0, 1, 3, 4, 5 }.Shuffle();
         for (int i = 0; i < 64; i++)
-        {
-            _animSatis[_spiralOrder[i]] = true;
-            BoozleButtonObjs[63 - _spiralOrder[i]].GetComponent<MeshRenderer>().material = BoozleButtonMats[6];
-            yield return new WaitForSeconds(0.044f);
-        }
+            BoozleButtonObjs[i].GetComponent<MeshRenderer>().material = BoozleButtonMats[arr[0]];
+        yield return new WaitForSeconds(0.25f);
+        for (int i = 0; i < 64; i++)
+            BoozleButtonObjs[i].GetComponent<MeshRenderer>().material = BoozleButtonMats[arr[1]];
+        yield return new WaitForSeconds(0.25f);
+        for (int i = 0; i < 64; i++)
+            BoozleButtonObjs[i].GetComponent<MeshRenderer>().material = BoozleButtonMats[arr[2]];
+        yield return new WaitForSeconds(0.5f);
+        for (int i = 0; i < 64; i++)
+            BoozleButtonObjs[i].GetComponent<MeshRenderer>().material = BoozleButtonMats[arr[3]];
+        yield return new WaitForSeconds(0.25f);
+        for (int i = 0; i < 64; i++)
+            BoozleButtonObjs[i].GetComponent<MeshRenderer>().material = BoozleButtonMats[arr[4]];
+        yield return new WaitForSeconds(0.25f);
+        for (int i = 0; i < 64; i++)
+            BoozleButtonObjs[i].GetComponent<MeshRenderer>().material = BoozleButtonMats[6];
+        yield return new WaitForSeconds(0.5f);
         for (int i = 0; i < 64; i++)
             BoozleButtonObjs[i].GetComponent<MeshRenderer>().material = BoozleButtonMats[2];
         Module.HandlePass();
         _actuallySolved = true;
-        yield break;
     }
 
 #pragma warning disable 0414

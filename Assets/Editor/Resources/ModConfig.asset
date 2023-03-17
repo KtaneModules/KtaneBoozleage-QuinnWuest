@@ -14,15 +14,9 @@ MonoBehaviour:
   id: BoozleageModule
   title: Boozleage
   author: Quinn Wuest
-  description: 'Impending doom approa... okay, what the hell is this?!
-
-
-    Made by Quinn Wuest
-
-
-    The manual can be found [url=https://ktane.timwi.de/HTML/Boozleage.html]here[/url].
-
-'
+  description: "Impending doom approa... okay, what the hell is this?!\r\n\r\nMade
+    by Quinn Wuest\r\n\r\n[url=https://ktane.timwi.de/HTML/Boozleage.html]Manual HTML[/url]\r\n[url=https://ktane.timwi.de/PDF/Boozleage.pdf]Manual
+    PDF[/url]"
   version: 1.0
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 481a889040ef6e04d9beb58489f44c46, type: 3}
