@@ -25,9 +25,9 @@ public class BoozleageScript : MonoBehaviour
     private bool _moduleSolved;
     private bool _actuallySolved;
 
-    private int[] _buttonSets = new int[64];
-    private int[] _buttonLetters = new int[64];
-    private int[] _buttonColors = new int[64];
+    private readonly int[] _buttonSets = new int[64];
+    private readonly int[] _buttonLetters = new int[64];
+    private readonly int[] _buttonColors = new int[64];
     private static readonly string[] _colorNames = { "RED", "YELLOW", "GREEN", "BLUE", "MAGENTA", "WHITE" };
     private static readonly int[][] _squares = new int[16][] {
         new int[4] {0, 7, 56, 63},
@@ -48,10 +48,9 @@ public class BoozleageScript : MonoBehaviour
         new int[4] {27, 28, 35, 36}
     };
     private int[] _chosenSquares = new int[3];
-    private int[][] _acceptablePos = new int[3][] { new int[4], new int[4], new int[4] };
-    private bool[] _satisfied = new bool[3];
-    private bool[] _animSatis = new bool[64];
-    private int[] _spiralOrder = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 15, 23, 31, 39, 47, 55, 63, 62, 61, 60, 59, 58, 57, 56, 48, 40, 32, 24, 16, 8, 9, 10, 11, 12, 13, 14, 22, 30, 38, 46, 54, 53, 52, 51, 50, 49, 41, 33, 25, 17, 18, 19, 20, 21, 29, 37, 45, 44, 43, 42, 34, 26, 27, 28, 36, 35 };
+    private readonly int[][] _acceptablePos = new int[3][] { new int[4], new int[4], new int[4] };
+    private readonly bool[] _satisfied = new bool[3];
+    private readonly bool[] _animSatis = new bool[64];
 
     private void Start()
     {
@@ -60,45 +59,37 @@ public class BoozleageScript : MonoBehaviour
             BoozleButtonSels[i].OnInteract += BoozleButtonPress(i);
 
         _chosenSquares = Enumerable.Range(0, 16).ToArray().Shuffle().Take(3).ToArray();
-        var randomLetters = Enumerable.Range(0, 26).ToArray().Shuffle().Take(3).ToArray();
+        var randomChosenLetters = Enumerable.Range(0, 26).ToArray().Shuffle().Take(3).ToArray();
         for (int sq = 0; sq < _chosenSquares.Length; sq++)
-        {
             for (int i = 0; i < _squares[_chosenSquares[sq]].Length; i++)
-                _buttonLetters[_squares[_chosenSquares[sq]][i]] = randomLetters[sq];
-        }
+                _buttonLetters[_squares[_chosenSquares[sq]][i]] = randomChosenLetters[sq];
         for (int sq = 0; sq < _chosenSquares.Length; sq++)
         {
             for (int i = 0; i < _acceptablePos[sq].Length; i++)
                 _acceptablePos[sq][i] = _squares[_chosenSquares[sq]][i];
             Debug.LogFormat("[Boozleage #{0}] Square {1} has letter {2} with vertices at {3}.", _moduleId, "ABC"[sq], "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[_buttonLetters[_acceptablePos[sq][0]]], _acceptablePos[sq].Select(i => GetCoord(i)).Join(", "));
         }
-        TryAgain:
-        for (int i = 0; i < BoozleButtonObjs.Length; i++)
+
+        for (int i = 0; i < 16; i++)
         {
-            _buttonColors[i] = Rnd.Range(0, 6);
-            _buttonSets[i] = Rnd.Range(0, 3);
-            if (!_squares[_chosenSquares[0]].Contains(i) && !_squares[_chosenSquares[1]].Contains(i) && !_squares[_chosenSquares[2]].Contains(i))
-                _buttonLetters[i] = Rnd.Range(0, 26);
+            if (!_chosenSquares.Contains(i))
+            {
+                newRandom:
+                var randomLetters = Enumerable.Range(0, 26 * 4).Select(j => j / 4).ToArray().Shuffle().Take(4).ToArray();
+                if (randomLetters.Distinct().Count() == 1)
+                    goto newRandom;
+                for (int j = 0; j < randomLetters.Length; j++)
+                    _buttonLetters[_squares[i][j]] = randomLetters[j];
+            }
+            for (int j = 0; j < 4; j++)
+            {
+                _buttonSets[i * 4 + j] = Rnd.Range(0, 3);
+                _buttonColors[i * 4 + j] = Rnd.Range(0, 6);
+            }
         }
-        for (int i = 0; i < _squares.Length; i++)
-        {
-            if (_chosenSquares.Contains(i))
-                continue;
-            if (_squares[i].Distinct().Count() == 1)
-                goto TryAgain;
-        }
-        var ac = new List<int>();
-        for (int i = 0; i < _acceptablePos.Length; i++)
-        {
-            var c = _acceptablePos[i].Select(j => _buttonColors[j]).ToArray();
-            var s = _acceptablePos[i].Select(j => _buttonSets[j]).ToArray();
-            ac.AddRange(c);
-            if (s.Distinct().Count() != 3)
-                goto TryAgain;
-        }
-        if (ac.Distinct().Count() < 5)
-            goto TryAgain;
-        Debug.LogFormat("[Boozleage #{0}] Full grid. Letter, then Boozleglyph Set, then Color:", _moduleId);
+        for (int i = 0; i < 64; i++)
+            Debug.LogFormat("[Boozleage #{0}] Full grid. Letter, then Boozleglyph Set, then Color:", _moduleId);
+
         for (int i = 0; i < BoozleButtonObjs.Length; i++)
         {
             BoozleButtonObjs[i].GetComponent<MeshRenderer>().material = BoozleButtonMats[_buttonColors[i]];
