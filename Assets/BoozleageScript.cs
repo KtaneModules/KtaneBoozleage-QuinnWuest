@@ -87,9 +87,6 @@ public class BoozleageScript : MonoBehaviour
                 _buttonColors[i * 4 + j] = Rnd.Range(0, 6);
             }
         }
-        for (int i = 0; i < 64; i++)
-            Debug.LogFormat("[Boozleage #{0}] Full grid. Letter, then Boozleglyph Set, then Color:", _moduleId);
-
         for (int i = 0; i < BoozleButtonObjs.Length; i++)
         {
             BoozleButtonObjs[i].GetComponent<MeshRenderer>().material = BoozleButtonMats[_buttonColors[i]];
@@ -100,6 +97,7 @@ public class BoozleageScript : MonoBehaviour
             if (_buttonSets[i] == 2)
                 BoozleButtonLetters[i].GetComponent<MeshRenderer>().material.mainTexture = BoozleSetThree[_buttonLetters[i]];
         }
+        Debug.LogFormat("[Boozleage #{0}] Full grid. Letter, then Boozleglyph Set, then Color:", _moduleId);
         string str = "";
         for (int i = 0; i < 8; i++)
         {
